@@ -1,0 +1,46 @@
+version: '3.9'
+
+networks:
+    laravel:
+        name: laravel
+
+services:
+    nginx:
+        build:
+            context: .
+            dockerfile: ./.docker/nginx/Dockerfile
+        restart: always
+        volumes:
+            - ./:/var/www/html:delegated
+        depends_on:
+            - php
+        networks:
+            - laravel
+
+    postgres:
+        image: postgres:13.3
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_ROOT_PASSWORD: postgres
+            PGDATA: "/etc/postgresql/15/main/"
+        restart: unless-stopped
+        volumes:
+          - ./data:/etc/postgresql/15/main/
+        ports:
+          - "5432:5432"
+        networks:
+          - laravel
+
+    php:
+        build:
+            context: .
+            dockerfile: ./.docker/php/Dockerfile
+        restart: always
+        volumes:
+            - ./:/var/www/html:delegated
+        environment:
+            - XDEBUG_CLIENT_HOST=${XDEBUG_CLIENT_HOST:-172.17.0.1}
+        networks:
+            - laravel
