@@ -39,11 +39,10 @@ class RegisterAction
 
     protected function createPassportClient(User $user): Client
     {
-        // Создание клиентского приложения OAuth для пользователя
         $client = new Client();
         $client->user_id = $user->id;
-        $client->name = $user->name . "'s Personal Client";
-        $client->redirect = 'https://www.google.com/'; // Укажите URL вашего приложения
+        $client->name = $user->email . "'s Personal Client";
+        $client->redirect = env('APP_URL');
         $client->personal_access_client = false;
         $client->password_client = true;
         $client->revoked = false;

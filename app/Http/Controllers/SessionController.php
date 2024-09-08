@@ -6,7 +6,6 @@ use App\Actions\SessionActions\DeleteUserSessionAction;
 use App\Actions\SessionActions\UserSessionsListAction;
 use App\Http\Requests\SessionRequests\RevokeUserSessionRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {

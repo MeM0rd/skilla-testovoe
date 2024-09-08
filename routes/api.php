@@ -19,13 +19,12 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:api')
 Route::middleware('auth:api')->group(function () {
     Route::prefix('sessions')->group(function () {
         Route::get('/{user_id}', [SessionController::class, 'getUserSessions']);
-        Route::post('/', [SessionController::class, 'revokeUserSession']);
+        Route::delete('/', [SessionController::class, 'revokeUserSession']);
     });
 
     Route::prefix('order')->group(function () {
         Route::post('/', [OrderController::class, 'create']);
         Route::post('/assign-worker', [OrderController::class, 'assignWorker']);
-        Route::post('/update-status', [OrderController::class, 'updateStatus']);
     });
 
     Route::prefix('worker')->group(function () {
