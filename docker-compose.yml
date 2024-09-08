@@ -3,21 +3,27 @@ version: '3.9'
 networks:
     laravel:
         name: laravel
+        driver: bridge
 
 services:
     nginx:
+        container_name: testovoe-webserver
         build:
             context: .
             dockerfile: ./.docker/nginx/Dockerfile
         restart: always
         volumes:
             - ./:/var/www/html:delegated
+        ports:
+            - '80:80'
+            - "10001:10001"
         depends_on:
             - php
         networks:
             - laravel
 
     postgres:
+        container_name: testovoe-db
         image: postgres:13.3
         environment:
             POSTGRES_DB: postgres
@@ -34,6 +40,8 @@ services:
           - laravel
 
     php:
+        container_name: testovoe-app
+        user: "1000:1000"
         build:
             context: .
             dockerfile: ./.docker/php/Dockerfile
